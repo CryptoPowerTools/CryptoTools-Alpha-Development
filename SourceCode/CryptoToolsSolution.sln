@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.Common", "CryptoTools.Common\CryptoTools.Common.csproj", "{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.Cryptography", "CryptoTools.Cryptography\CryptoTools.Cryptography.csproj", "{277A5C6B-684D-4160-8CED-4A69858941C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.Common.UnitTests", "CryptoTools.Common.UnitTests\CryptoTools.Common.UnitTests.csproj", "{8DE011D7-14DB-486E-91EF-03C28AF70189}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.Cryptography.UnitTests", "CryptoTools.Cryptography.UnitTests\CryptoTools.Cryptography.UnitTests.csproj", "{D87F16DB-6E15-409B-922D-14EA42515097}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{174CD6B2-51BA-46FC-AFD6-D22C959EDE68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.CryptoFiles", "CryptoTools.CryptoFiles\CryptoTools.CryptoFiles.csproj", "{C0EC3006-1813-42E9-8FE0-96040F1EBBA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.CryptoFiles.UnitTests", "CryptoTools.CryptoFiles.UnitTests\CryptoTools.CryptoFiles.UnitTests.csproj", "{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{277A5C6B-684D-4160-8CED-4A69858941C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{277A5C6B-684D-4160-8CED-4A69858941C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{277A5C6B-684D-4160-8CED-4A69858941C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{277A5C6B-684D-4160-8CED-4A69858941C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE011D7-14DB-486E-91EF-03C28AF70189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE011D7-14DB-486E-91EF-03C28AF70189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE011D7-14DB-486E-91EF-03C28AF70189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE011D7-14DB-486E-91EF-03C28AF70189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D87F16DB-6E15-409B-922D-14EA42515097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D87F16DB-6E15-409B-922D-14EA42515097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D87F16DB-6E15-409B-922D-14EA42515097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D87F16DB-6E15-409B-922D-14EA42515097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0EC3006-1813-42E9-8FE0-96040F1EBBA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0EC3006-1813-42E9-8FE0-96040F1EBBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0EC3006-1813-42E9-8FE0-96040F1EBBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0EC3006-1813-42E9-8FE0-96040F1EBBA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8DE011D7-14DB-486E-91EF-03C28AF70189} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
+		{D87F16DB-6E15-409B-922D-14EA42515097} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
+		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
+	EndGlobalSection
+EndGlobal
