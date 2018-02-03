@@ -17,7 +17,6 @@ namespace CryptoTools.CryptoFiles.DataFiles
 		public readonly byte[] ContentFormat = new byte[] { 0xA, 0x0 };
 		public readonly byte[] EndFileFormat = new byte[] { 0xAA, 0xFF };
 		#endregion
-
 		
 		#region File Structure
 		public CryptoFileHeader Header = new CryptoFileHeader();
@@ -27,8 +26,7 @@ namespace CryptoTools.CryptoFiles.DataFiles
 		#region Private Fields
 		private bool _isLoaded = false;
 		private Hasher _hasher = null;
-		#endregion
-		
+		#endregion		
 
 		#region Constructor
 		public CryptoDataFile(string fullFileName, Hasher hasher = null)

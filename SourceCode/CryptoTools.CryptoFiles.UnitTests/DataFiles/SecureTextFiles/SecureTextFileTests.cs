@@ -59,7 +59,7 @@ namespace CryptoTools.CryptoFiles.UnitTests.DataFiles.SecureTextFiles
 			// Arrange
 			/////////////////////////////////////////////////////////////////////
 			string fileName = "SecureTextFile.dat";
-			int iterations = 2000;
+			int iterations = 1000;
 			FileManager fileMan = new FileManager();
 			string text = new TextGenerator() { ApproxLineLength = 25 }.GenerateText(100);
 

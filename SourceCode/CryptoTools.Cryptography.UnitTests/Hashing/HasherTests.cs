@@ -5,6 +5,8 @@ using CryptoTools.Cryptography.Hashing;
 using CryptoTools.Common.FileSystems;
 using System.IO;
 using System.Diagnostics;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CryptoTools.Cryptography.UnitTests.Hashing
 {
@@ -25,6 +27,70 @@ namespace CryptoTools.Cryptography.UnitTests.Hashing
 
 			// Assert
 			Assert.IsTrue(hash.Equals(hashSha256Expected));
+		}
+
+		[TestMethod]
+		public void HasherBasicUsage2()
+		{
+			/*
+			// Arrange
+			string message = "Hash Test";
+			string fileName = "testFile.bin";
+			string directoryRoot = "TestFiles";
+			string directoryRoot2 = "TestFiles2";
+
+
+			//// Create Files and Directories
+			List<DirectoryInfo> directories = new List<DirectoryInfo>()
+			{
+				new DirectoryInfo("TestFiles1"),
+				new DirectoryInfo("TestFiles2")
+			};
+			List<FileInfo> files = new List<FileInfo>()
+			{
+				new FileInfo("TestFiles1"),
+				new FileInfo("TestFiles2")
+			};
+
+			using (CreateAutoDeleteDirectory directory = new CreateAutoDeleteDirectory(directories))
+			{
+				using (CreateAutoDeleteFiles autoDeleteFiles = new CreateAutoDeleteFiles(files))
+				{
+
+
+
+
+
+				}
+			}	
+
+			// Create the default Hasher SHA256 & example of user defined algorithm 
+			// ( You can use all the .Net Cryptography Hashers or write your own custom hashers)
+			Hasher sha256 = new Hasher();
+			Hasher sha512 = new Hasher(SHA512.Create());
+
+			// Create Hashes that return a hexidecimal string fingerprint (Ex. a091c02972cf73649dcb7ef912ef9ee40071ced5b36cfccb0960e8fa2db3cb5a)
+			string hashString = sha256.Hash(message);
+			string hashBytes = sha256.Hash(new byte[] { 1, 2, 3 });
+			string hashStream = sha256.Hash(File.OpenRead(fileName));
+			string hashFile = sha256.HashFile(message);
+			string hashMulti = sha256.MultiHash(message, 1000); // 1000 iterations
+
+			// Create Hashes that return a byte array of the hash signature
+			byte[] hashedBytes = sha256.HashToBytes(new byte[] { 1, 2, 3 });
+			byte[] hashedFileStream = sha256.HashToBytes(File.OpenRead(fileName));
+			byte[] hashedString = sha256.HashToBytes(message);
+			
+			// Takes approx 500ms ideal for adding complexity
+			string hashSecure = sha256.SecureHash(message,500); 
+
+			// Hashes every file in a directory and return a single hash
+			string hashFullDirectory = sha256.HashDirectoryTree(directoryRoot);
+
+			// Compares 2 diretories for Equality based on all file contents in directory
+			bool match = sha256.CompareDirectoryHashSignatures(directoryRoot, directoryRoot2);
+			*/
+			
 		}
 
 		[TestMethod]

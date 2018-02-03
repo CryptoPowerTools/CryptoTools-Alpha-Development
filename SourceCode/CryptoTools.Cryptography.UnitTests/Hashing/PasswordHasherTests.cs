@@ -36,5 +36,22 @@ namespace CryptoTools.Cryptography.UnitTests.Hashing
 			Assert.IsTrue(hasher.PasswordCheck(cryptoPassword, hash));
 			
 		}
+
+		[TestMethod]
+		public void PasswordHasher_BasicUsageWiki()
+		{			
+// Create password -> SecureString -> CryptpString
+string password = "My Passord";
+PasswordHasher hasher = new PasswordHasher();
+SecureString securePassword = CryptoString.StringToSecureString(password);
+CryptoString cryptoPassword = new CryptoString(securePassword);
+
+// Create the Hash
+string hash = hasher.PasswordHash(cryptoPassword);
+
+// Check the password against the hash, salt and pepper
+bool valid = hasher.PasswordCheck(cryptoPassword, hash);
+			
+		}
 	}
 }

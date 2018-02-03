@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystems\ByteGenerator.cs" />
+    <Compile Include="FileSystems\CreateAutoDeleteDirectory.cs" />
+    <Compile Include="FileSystems\CreateAutoDeleteFiles.cs" />
     <Compile Include="FileSystems\FileGenerator.cs" />
     <Compile Include="FileSystems\FileManager.cs" />
     <Compile Include="FileSystems\TextGenerator.cs" />

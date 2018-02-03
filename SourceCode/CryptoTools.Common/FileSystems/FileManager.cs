@@ -13,7 +13,7 @@ namespace CryptoTools.Common.FileSystems
 	/// </summary>
 	public class FileManager
 	{
-		public void DeleteFolder(string folderName, bool recursive = false)
+		public void DeleteDirectory(string folderName, bool recursive = false)
 		{
 			try
 			{
@@ -26,6 +26,35 @@ namespace CryptoTools.Common.FileSystems
 			{
 				Debug.WriteLine(e.Message);
 			}
+		}
+
+		public void CreateDirectory(string _directoryName)
+		{
+			Directory.CreateDirectory(_directoryName);
+		}
+
+		public bool AllFilesExists(IList<FileInfo> files)
+		{
+			foreach (FileInfo info in files)
+			{
+				if(!File.Exists(info.FullName))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public bool AllFilesDoNotExist(IList<FileInfo> files)
+		{
+			foreach (FileInfo info in files)
+			{
+				if (File.Exists(info.FullName))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		public void DeleteAllFilesAndDirectories(List<string> files, List<string> directories, bool recursiveDirectories = false)
@@ -65,6 +94,18 @@ namespace CryptoTools.Common.FileSystems
 			}
 		}
 
+		public bool AllDirectoriesExists(List<DirectoryInfo> directories)
+		{
+			foreach (DirectoryInfo info in directories)
+			{
+				if (!Directory.Exists(info.FullName))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
 		public void DeleteFile(string fileName)
 		{
 			try
@@ -101,6 +142,35 @@ namespace CryptoTools.Common.FileSystems
 		public bool FileExists(string archiveFileName)
 		{
 			return File.Exists(archiveFileName);
+		}
+
+		public bool IsFileLocked(FileInfo file)
+		{
+			FileStream stream = null;
+			try
+			{
+				stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+			}
+			catch (IOException)
+			{
+				//the file is unavailable because it is:
+				//still being written to
+				//or being processed by another thread
+				//or does not exist (has already been processed)
+				return true;
+			}
+			finally
+			{
+				if (stream != null)
+					stream.Close();
+			}
+
+			//file is not locked
+			return false;
+		}
+		public bool IsFileLocked(string fileName)
+		{
+			return IsFileLocked(new FileInfo(fileName));
 		}
 	}
 }
