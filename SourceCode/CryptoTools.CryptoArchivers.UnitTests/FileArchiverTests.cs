@@ -144,46 +144,43 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 			FileManager fileMan = new FileManager();
 			Hasher hasher = new Hasher();
 			CryptoString passPhrase = new CryptoString(CryptoString.StringToSecureString("Tests"));
-			int fileSize = 10000;
-
-			// Define Some Directories & Files
-			//string archiveDirectory = "ArchiveDirectory";
 			string extractDirectory = "ExtractDirectory";
-			int iterationSeed = 30;
 
+			///////////////////////////////////////////////////
+			// Tweak this to stress test  10-5- is reasonable
+			///////////////////////////////////////////////////
+			int iterationSeed = 30;
 
 			int iterations = random.Next(iterationSeed/2, iterationSeed*2);
 
 			try
 			{
-				
-
 				for (int i = 0; i < iterations; i++)
 				{
 					Stopwatch sw = Stopwatch.StartNew();
 
+					// Set Random vars
+					int fileSize = iterationSeed * 20;
 					int directoryCount = random.Next(iterationSeed / 2, iterationSeed * 2);
+					int fileCount = random.Next(iterationSeed * 5, iterationSeed * 10);
+
+
 					List<DirectoryInfo> directories = new List<DirectoryInfo>();
 					for (int d = 0; d < directoryCount; d++)
 					{
 						directories.Add(new DirectoryInfo(fileMan.GenerateTempDirectoryName()));
 					}
-					//	directories.Add(new DirectoryInfo(extractDirectory));
-
-
-					int fileCount = random.Next(iterationSeed * 5, iterationSeed * 10);
 					List<FileInfo> files = new List<FileInfo>();
 					for (int f = 0; f < fileCount; f++)
 					{
 						string fileName = $"{Path.Combine(GetRandomDirName(directories), fileMan.GenerateTempFileName("bin", false))}";
 						files.Add(new FileInfo(fileName));
 					}
+
 					using (CreateAutoDeleteDirectory d = new CreateAutoDeleteDirectory(directories))
 					{
 						using (CreateAutoDeleteFiles f = new CreateAutoDeleteFiles(files, true, fileSize))
 						{
-
-
 							//////////////////////////////////////////////////////
 							// Save to File and Verify
 							/////////////////////////////////////////////////////// Create the Archiver, Add Directory and Save (Zip/Archive)
@@ -200,6 +197,7 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 							// Extract all files
 							archiver.ExtractAll(extractDirectory);
 
+							// Compare directories of orginal and archived (unpacked)
 							foreach (var dirs in directories)
 							{
 								string dir1 = dirs.Name;
@@ -211,8 +209,6 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 							// Save the Bytes and Verify
 							/////////////////////////////////////////////////////
 							CryptoArchiver archiver2 = new CryptoArchiver();
-							//string fileName2 = fileMan.GenerateTempFileName("archive", true);
-							//archiver2.FullFileName = fileName;
 							archiver2.Passphrase = passPhrase;
 							foreach (var dirs in directories)
 							{
@@ -224,14 +220,10 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 
 							// Clean up files
 							fileMan.DeleteFile(fileName);
-							//fileMan.DeleteFile(fileName2);
 							fileMan.DeleteDirectory(extractDirectory, true);
-
 						}
 					}
 					Debug.WriteLine($"Test Loop Elapsed Milliseconds : {sw.ElapsedMilliseconds}");
-
-
 				}
 
 			}

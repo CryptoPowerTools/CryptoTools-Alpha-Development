@@ -26,7 +26,8 @@ namespace CryptoTools.CryptoArchivers
 				_archiver.FullFileName = value;
 			}
 		}
-		public CryptoString Passphrase {
+		public CryptoString Passphrase
+		{
 			get
 			{
 				return _archiver.Passphrase;
@@ -46,7 +47,6 @@ namespace CryptoTools.CryptoArchivers
 			{
 				_archiver = new DotNetZipArchiver();
 			}
-
 		}		
 	
 		public void AddDirectory(string directoryName, string directoryNameInArchive = "")
@@ -69,7 +69,6 @@ namespace CryptoTools.CryptoArchivers
 			_archiver.Save();
 		}
 
-
 		public byte[] SaveToBytes()
 		{
 			FileManager fileMan = new FileManager();
@@ -77,9 +76,9 @@ namespace CryptoTools.CryptoArchivers
 			_archiver.FullFileName = tempFileName;
 			_archiver.Save();
 			_archiver.FullFileName = ""; // For safety reset the filename
+			
+			// Read Bytes and delete file
 			byte[] bytes = File.ReadAllBytes(tempFileName);
-
-			// delete file tmp
 			fileMan.DeleteFile(tempFileName);
 
 			return bytes;
