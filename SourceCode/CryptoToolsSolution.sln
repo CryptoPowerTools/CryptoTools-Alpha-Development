@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.CryptoFiles", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.CryptoFiles.UnitTests", "CryptoTools.CryptoFiles.UnitTests\CryptoTools.CryptoFiles.UnitTests.csproj", "{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.CryptoArchivers", "CryptoTools.CryptoArchivers\CryptoTools.CryptoArchivers.csproj", "{C6B64D1B-4280-4B71-BA02-E0DC079CAAAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTools.CryptoArchivers.UnitTests", "CryptoTools.CryptoArchivers.UnitTests\CryptoTools.CryptoArchivers.UnitTests.csproj", "{6EF593FA-2EAD-4E73-B854-A4795FBB686B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6B64D1B-4280-4B71-BA02-E0DC079CAAAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6B64D1B-4280-4B71-BA02-E0DC079CAAAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6B64D1B-4280-4B71-BA02-E0DC079CAAAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6B64D1B-4280-4B71-BA02-E0DC079CAAAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EF593FA-2EAD-4E73-B854-A4795FBB686B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EF593FA-2EAD-4E73-B854-A4795FBB686B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EF593FA-2EAD-4E73-B854-A4795FBB686B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EF593FA-2EAD-4E73-B854-A4795FBB686B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +67,6 @@ Global
 		{8DE011D7-14DB-486E-91EF-03C28AF70189} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
 		{D87F16DB-6E15-409B-922D-14EA42515097} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
 		{4E4D0986-C05F-45F4-A6B8-4966AB0DB34F} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
+		{6EF593FA-2EAD-4E73-B854-A4795FBB686B} = {174CD6B2-51BA-46FC-AFD6-D22C959EDE68}
 	EndGlobalSection
 EndGlobal

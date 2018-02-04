@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}</ProjectGuid>
+    <ProjectGuid>{C6B64D1B-4280-4B71-BA02-E0DC079CAAAF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CryptoTools.Common</RootNamespace>
-    <AssemblyName>CryptoTools.Common</AssemblyName>
+    <RootNamespace>CryptoTools.CryptoArchivers</RootNamespace>
+    <AssemblyName>CryptoTools.CryptoArchivers</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,24 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystems\ByteGenerator.cs" />
-    <Compile Include="FileSystems\CreateAutoDeleteDirectory.cs" />
-    <Compile Include="FileSystems\CreateAutoDeleteFiles.cs" />
-    <Compile Include="FileSystems\FileGenerator.cs" />
-    <Compile Include="FileSystems\FileManager.cs" />
-    <Compile Include="FileSystems\TextGenerator.cs" />
-    <Compile Include="Logging\DebugLogger.cs" />
-    <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Logging\LoggingExceptions.cs" />
+    <Compile Include="Archivers\DotNetZipArchiver.cs" />
+    <Compile Include="CryptoArchiver.cs" />
+    <Compile Include="IFileArchiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\DefaultOptionsBuilder.cs" />
-    <Compile Include="Utils\GuidUtils.cs" />
-    <Compile Include="Utils\ObjectUtils.cs" />
-    <Compile Include="Utils\Randomizer.cs" />
-    <Compile Include="Utils\StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Serialization\" />
+    <ProjectReference Include="..\CryptoTools.Common\CryptoTools.Common.csproj">
+      <Project>{88BDB474-EBB6-48CF-863C-CC03C6F4BFEC}</Project>
+      <Name>CryptoTools.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CryptoTools.Cryptography\CryptoTools.Cryptography.csproj">
+      <Project>{277A5C6B-684D-4160-8CED-4A69858941C5}</Project>
+      <Name>CryptoTools.Cryptography</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
