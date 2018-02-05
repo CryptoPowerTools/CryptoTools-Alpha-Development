@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DataFiles\Archive\ArchiveFile.cs" />
+    <Compile Include="DataFiles\CryptoBlob.cs" />
     <Compile Include="DataFiles\CryptoDataFile.cs" />
     <Compile Include="DataFiles\CryptoFileFooter.cs" />
     <Compile Include="DataFiles\CryptoFileHeader.cs" />
