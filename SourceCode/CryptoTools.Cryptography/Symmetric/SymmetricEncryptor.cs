@@ -1,5 +1,7 @@
 ﻿using CryptoTools.Common.Logging;
+using CryptoTools.Cryptography.Exceptions;
 using CryptoTools.Cryptography.Hashing;
+using CryptoTools.Cryptography.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,14 +23,23 @@ namespace CryptoTools.Cryptography.Symmetric
 
 		#region Public Properties
 		public SymmetricEncryptorOptions Options { get; private set; }
+		public CryptoCredentials Credentials { get; set; }
 		#endregion
 
 		#region Constructors
+		public SymmetricEncryptor(	CryptoCredentials credentials, 
+									SymmetricAlgorithm algorithm = null, 
+									SymmetricEncryptorOptions options = null, 
+									HashAlgorithm hashAlgorithm = null) : this(algorithm, options, hashAlgorithm)
+		{
+			Credentials = credentials;
+		}
+
 		public SymmetricEncryptor(SymmetricAlgorithm algorithm = null, SymmetricEncryptorOptions options = null, HashAlgorithm hashAlgorithm = null)
 		{
 			_algorithm = algorithm != null ? algorithm : Aes.Create();
 			_hasher = hashAlgorithm != null ? new Hasher(hashAlgorithm) : new Hasher();
-			Options = SymmetricEncryptorOptions.CreateMergedInstance(options);			
+			Options = SymmetricEncryptorOptions.CreateMergedInstance(options);
 		}
 		#endregion
 
@@ -45,12 +56,15 @@ namespace CryptoTools.Cryptography.Symmetric
 			Rfc2898DeriveBytes generator = new Rfc2898DeriveBytes(iv, salt);
 			return generator.GetBytes(_algorithm.BlockSize / 8);
 		}
-		private void ReInitialize(string key)
+		private void ReInitialize()
 		{
-			// Hash again for ABSOLUTE security
-			key = _hasher.Hash(key);
+			if(Credentials==null)
+			{
+				throw new CryptoCredentialsNullException(this.GetType());
+			}
 
-			_algorithm.Key = MakeKey(key);
+
+			_algorithm.Key = MakeKey(Credentials.Key);
 			_algorithm.IV = MakeIV(Options.InitializationVector);
 			_algorithm.Mode = CipherMode.CBC; // Seems to be a good default, could change if good reason is found
 			_algorithm.Padding = PaddingMode.ISO10126; // ISO Mode seems to provide the most Obsfucation
@@ -58,12 +72,13 @@ namespace CryptoTools.Cryptography.Symmetric
 		#endregion
 
 		#region Public Methods
-		public byte[] EncryptBytes(byte[] bytesIn, string key)
+			
+		public byte[] EncryptBytes(byte[] bytesIn)
 		{
 			byte[] bytesOut;
 			try
 			{
-				ReInitialize(key);
+				ReInitialize();
 				using (MemoryStream memoryStream = new MemoryStream())
 				{
 					ICryptoTransform transform = _algorithm.CreateEncryptor();
@@ -91,15 +106,21 @@ namespace CryptoTools.Cryptography.Symmetric
 
 		}
 
-		public byte[] DecryptBytes(byte[] encryptedBytes, string key)
+		public byte[] DecryptBytes(byte[] encryptedBytes)
 		{
 			byte[] output;
 			try
 			{
-				ReInitialize(key);
+				ReInitialize();
 				ICryptoTransform transform = _algorithm.CreateDecryptor();
 				output = transform.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
 			
+			}
+			catch (CryptographicException cryptoException)
+			{
+				CryptoDecryptionException exception = new CryptoDecryptionException("Error Decrypting Bytes. This could be caused by invalid Credentials such as Passphrase or Pin.", cryptoException);
+				Log.ErrorException(exception, this);
+				throw exception;
 			}
 			catch (Exception exception)
 			{

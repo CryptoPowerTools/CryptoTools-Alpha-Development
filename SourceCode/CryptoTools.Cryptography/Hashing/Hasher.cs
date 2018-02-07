@@ -1,4 +1,5 @@
 ﻿using CryptoTools.Common.Utils;
+using CryptoTools.Cryptography.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,6 +32,7 @@ namespace CryptoTools.Cryptography.Hashing
 		/// </summary>
 		public Hasher() : this(null ,null)	{}
 
+		
 		/// <summary>
 		/// Creates a Hasher with custom options.
 		/// </summary>
@@ -47,6 +49,47 @@ namespace CryptoTools.Cryptography.Hashing
 			_algorithm = algorithm != null ? algorithm : SHA256.Create();
 			Options = HasherOptions.CreateMergedInstance(options);
 		}
+
+		public static bool IsHashValid(string key, HashAlgorithm algorithm = null)
+		{
+			if (string.IsNullOrEmpty(key)) return false;
+
+			HashAlgorithm a = algorithm == null ? SHA256.Create() : algorithm;
+			Hasher hasher = new Hasher(a);
+			string hash = hasher.Hash("test");
+
+			if (key.Length != hash.Length)
+				return false;
+
+			return true;
+		}
+
+		/// <summary>
+		/// Get the Length of the Hash string that is returned from the Hash() method. This will vary based on the current algorithm
+		/// </summary>
+		/// <param name="algorithm"></param>
+		/// <returns></returns>
+		public static int CalculateHashLength(HashAlgorithm algorithm = null)
+		{			
+			HashAlgorithm a = algorithm == null ? SHA256.Create() : algorithm;
+			Hasher hasher = new Hasher(a);
+			string hash = hasher.Hash("test");
+			return hash.Length;			
+		}
+
+		/// <summary>
+		/// Get the Length of the Hash Bytes that is returned from the HashToBytes() method. This will vary based on the current algorithm
+		/// </summary>
+		/// <param name="algorithm"></param>
+		/// <returns></returns>
+		public static int CalculateHashBytesLength(HashAlgorithm algorithm = null)
+		{
+			HashAlgorithm a = algorithm == null ? SHA256.Create() : algorithm;
+			Hasher hasher = new Hasher(a);
+			byte[] bytes = hasher.HashToBytes(new byte[] { 0x00 });
+			return bytes.Length;
+		}
+
 		#endregion
 
 		#region Public Hash Methods
@@ -65,6 +108,18 @@ namespace CryptoTools.Cryptography.Hashing
 			}
 			return hash;
 		}
+
+		/// <summary>
+		/// Hashes an Int32 and return a hash fingerprint based on the current Hash Algorithm
+		/// </summary>
+		/// <param name="data"></param>
+		/// <returns></returns>
+		public string Hash(int data)
+		{
+			byte[] bytes = BitConverter.GetBytes(data);
+			return Hash(bytes);
+		}
+
 
 
 		/// <summary>
@@ -263,6 +318,16 @@ namespace CryptoTools.Cryptography.Hashing
 
 			return isEquals;
 		}
+
+		/// <summary>
+		/// Returns and instance of the current Algorithm
+		/// </summary>
+		/// <returns></returns>
+		public HashAlgorithm GetAlgorithm()
+		{
+			return _algorithm;
+		}
+
 		#endregion
 
 		#region Private Methods

@@ -5,6 +5,8 @@ using CryptoTools.Common.FileSystems;
 using System.Linq;
 using System.Security.Cryptography;
 using CryptoTools.Cryptography.Utils;
+using System.Diagnostics;
+using CryptoTools.Cryptography.Exceptions;
 
 namespace CryptoTools.Cryptography.UnitTests.Symmetric
 {
@@ -14,23 +16,54 @@ namespace CryptoTools.Cryptography.UnitTests.Symmetric
 		[TestMethod]
 		public void SymmetricEncryptor_BasicUsage()
 		{
+			// Create the Credentials
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+			};
+
+			// Create some Buffers
+			byte[] buffer = new ByteGenerator().GenerateBytes(2000);
+			byte[] decryptedBuffer;
+			byte[] encryptedBuffer;
+
+			using (SymmetricEncryptor encryptor = new SymmetricEncryptor(credentials))
+			{
+				//Encrypt the buffer
+				encryptedBuffer = encryptor.EncryptBytes(buffer);
+
+				// Decrypt
+				decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer);
+			} 
+
+			// Assert - Check to make sure the bytes are all the same
+			Assert.IsTrue(buffer.SequenceEqual(decryptedBuffer));
+		}
+		[TestMethod]
+		public void SymmetricEncryptor_BasicTest()
+		{
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			};
+
 			// Arrange
 			int blockSize = 1000;
 			byte[] buffer = new ByteGenerator().GenerateBytes(blockSize);
-			string key = "test key";
 
 			byte[] decryptedBuffer;
 			byte[] encryptedBuffer;
 
-			using (SymmetricEncryptor encryptor = new SymmetricEncryptor())
+			using (SymmetricEncryptor encryptor = new SymmetricEncryptor(credentials))
 			{
 				//Encrypt
-				encryptedBuffer = encryptor.EncryptBytes(buffer, key);
-				
+				encryptedBuffer = encryptor.EncryptBytes(buffer);
+
 				// Decrypt
-				decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer, key);
+				decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer);
 			} // IDispose - Closes and clears the keys in memory
-			
+
 			// Assert - Check to make sure the bytes are all the same
 			Assert.IsTrue(buffer.SequenceEqual(decryptedBuffer));
 		}
@@ -38,6 +71,12 @@ namespace CryptoTools.Cryptography.UnitTests.Symmetric
 		[TestMethod]
 		public void SymmetricEncryptor_HeavyUsage()
 		{
+
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			};
 			CryptoRandomizer random = new CryptoRandomizer();
 			const int Iterations = 100;
 			const int MaxMemoryBlock = 100000;
@@ -52,13 +91,13 @@ namespace CryptoTools.Cryptography.UnitTests.Symmetric
 				byte[] decryptedBuffer;
 				byte[] encryptedBuffer;
 
-				using (SymmetricEncryptor encryptor = new SymmetricEncryptor())
+				using (SymmetricEncryptor encryptor = new SymmetricEncryptor(credentials))
 				{
 					//Encrypt
-					encryptedBuffer = encryptor.EncryptBytes(buffer, key);
+					encryptedBuffer = encryptor.EncryptBytes(buffer);
 
 					// Decrypt
-					decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer, key);
+					decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer);
 				} // IDispose - Closes and clears the keys in memory
 
 				// Assert - Check to make sure the bytes are all the same
@@ -85,5 +124,80 @@ namespace CryptoTools.Cryptography.UnitTests.Symmetric
 			///Wait
 			
 		}
+
+
+		[TestMethod]
+		public void SymmetricEncryptor_HandleExceptions()
+		{
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			};
+			CryptoCredentials credentialsBadCredentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My BAD Passphrase"),
+				Pin = 2222
+			};
+
+			byte[] buffer = new ByteGenerator().GenerateBytes(100);		
+			byte[] decryptedBuffer;
+			byte[] encryptedBuffer;
+
+			using (SymmetricEncryptor encryptor = new SymmetricEncryptor(credentials))
+			{
+				////////////////////////////////////////
+				//Successful En/Decryption
+				////////////////////////////////////////
+				encryptor.Credentials = credentials;
+				encryptedBuffer = encryptor.EncryptBytes(buffer);
+				decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer);
+				Assert.IsTrue(buffer.SequenceEqual(decryptedBuffer));
+
+
+				////////////////////////////////////////
+				// BAD Credentials will throw exception
+				////////////////////////////////////////
+				try
+				{
+					encryptor.Credentials = credentials;
+					encryptedBuffer = encryptor.EncryptBytes(buffer);
+					encryptor.Credentials = credentialsBadCredentials;
+					decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer);
+				}
+				catch (CryptoDecryptionException exception)
+				{
+					Assert.IsTrue(exception is CryptoDecryptionException);
+
+				}
+				catch (Exception exception)
+				{
+					Debug.WriteLine(exception.Message);
+					Assert.Fail("Test was not expecting an Exception");
+				}
+
+				////////////////////////////////////////
+				// NULL Credentials not set will throw exception
+				////////////////////////////////////////
+				try
+				{
+					encryptor.Credentials = null;
+					encryptedBuffer = encryptor.EncryptBytes(buffer);
+					encryptor.Credentials = credentialsBadCredentials;
+					decryptedBuffer = encryptor.DecryptBytes(encryptedBuffer);
+				}
+				catch (CryptoCredentialsNullException exception)
+				{
+					Assert.IsTrue(exception is CryptoCredentialsNullException);
+
+				}
+				catch (Exception exception)
+				{
+					Debug.WriteLine(exception.Message);
+					Assert.Fail("Test was not expecting an Exception");
+				}				
+			}
+
+		}		
 	}
 }

@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace CryptoTools.CryptoFiles.DataFiles
 {
-	public class CryptoFileHeader
+
+	/// <summary>
+	/// /// Data structure that represents the File footer of the data file
+	/// </summary>
+	public class CryptoDataFileHeader
 	{
 		#region Public Data Fields
 		public byte[] FileFormat { get; set; } = new byte[2];

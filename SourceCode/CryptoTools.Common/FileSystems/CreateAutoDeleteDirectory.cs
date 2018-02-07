@@ -29,13 +29,7 @@ namespace CryptoTools.Common.FileSystems
 		public CreateAutoDeleteDirectory(string directoryName)
 		{
 			_directoryName = directoryName;
-
-
 			DirectoryInfo info = Directory.CreateDirectory(_directoryName);
-		
-			//using (DirectoryInfo info = Directory.CreateDirectory(_directoryName))
-			//{
-			//}
 		}
 
 		public void Dispose()
@@ -50,7 +44,7 @@ namespace CryptoTools.Common.FileSystems
 
 				if (b)
 				{
-					Directory.Delete(info.FullName);
+					_fileMan.DeleteDirectory(info.FullName, true);
 				}
 			}
 		}

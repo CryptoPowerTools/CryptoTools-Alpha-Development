@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CryptoTools.Common.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,6 +58,16 @@ namespace CryptoTools.Common.FileSystems
 			}
 			return true;
 		}
+
+
+		public void DeleteAllFilesAndDirectories(List<FileInfo> files, List<DirectoryInfo> directories, bool recursiveDirectories = false)
+		{
+			List<string> f = files.ConvertAll(file => file.FullName);
+			List<string> d = directories.ConvertAll(directory => directory.FullName);
+
+			DeleteAllFilesAndDirectories(f, d, recursiveDirectories);
+		}
+
 
 		public void DeleteAllFilesAndDirectories(List<string> files, List<string> directories, bool recursiveDirectories = false)
 		{
@@ -121,6 +133,7 @@ namespace CryptoTools.Common.FileSystems
 			File.Delete(fileName);
 		}
 
+		
 		public FileInfo GetFileInfo(string fileName)
 		{
 			FileInfo info = new FileInfo(fileName);
@@ -171,6 +184,19 @@ namespace CryptoTools.Common.FileSystems
 		public bool IsFileLocked(string fileName)
 		{
 			return IsFileLocked(new FileInfo(fileName));
+		}
+
+		public string GenerateTempFileName(string extension = "tmp", bool excludeTilde = false, int length = 10)
+		{
+			string name = new ByteGenerator().GenerateBytesString(length);
+			string tilde = excludeTilde == true ? "" : "~"; 		
+			string fileName = $"{tilde}{name}.{extension}";
+			return fileName;
+		}
+		public string GenerateTempDirectoryName(int length = 10)
+		{
+			string name = new ByteGenerator().GenerateBytesString(length);
+			return name;
 		}
 	}
 }

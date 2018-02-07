@@ -1,0 +1,6 @@
+
+
+
+Development to do
+---------------------------
+CryptoDataFile -> CryptoFileFailedVerificationException -> Add an FormatErrors List to the exception to see all the formatting issues.
