@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Asymmetric\AsymmetricEncryptor.cs" />
+    <Compile Include="Exceptions\CryptoException.cs" />
+    <Compile Include="Utils\CryptoBlob.cs" />
+    <Compile Include="Utils\CryptoCredentials.cs" />
     <Compile Include="Utils\CryptoRandomizer.cs" />
     <Compile Include="Utils\CryptoString.cs" />
     <Compile Include="Encoders\Base64Encoder.cs" />

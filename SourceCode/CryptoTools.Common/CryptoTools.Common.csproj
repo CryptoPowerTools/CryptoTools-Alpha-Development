@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSystems\AutoDeleteFiles.cs" />
     <Compile Include="FileSystems\ByteGenerator.cs" />
     <Compile Include="FileSystems\CreateAutoDeleteDirectory.cs" />
     <Compile Include="FileSystems\CreateAutoDeleteFiles.cs" />

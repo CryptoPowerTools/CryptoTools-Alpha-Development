@@ -12,9 +12,9 @@ namespace CryptoTools.CryptoFiles.DataFiles
 	/// Secure Text Data File is specific implementation of CryptoDataFile that allows you to store plain text in an encrypted file.
 	/// </summary>
 	public class SecureTextFile : CryptoDataFile
-	{
-			
-		public SecureTextFile(string fullFileName) : base(fullFileName)
+	{	
+
+		public SecureTextFile(string fullFileName) : base(new CryptoDataFileOptions { ContentFormat= new byte[] { 0xB, 0x0 } }, fullFileName)
 		{
 			FullFileName = fullFileName;
 		}

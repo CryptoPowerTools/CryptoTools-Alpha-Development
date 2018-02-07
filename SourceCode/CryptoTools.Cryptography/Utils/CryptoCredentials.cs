@@ -1,4 +1,5 @@
-﻿using CryptoTools.Cryptography.Hashing;
+﻿using CryptoTools.Cryptography.Exceptions;
+using CryptoTools.Cryptography.Hashing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,34 +9,137 @@ using System.Threading.Tasks;
 
 namespace CryptoTools.Cryptography.Utils
 {
-	public class CryptoCredentials
+
+
+
+	public class CryptoCredentialsException : CryptoException
 	{
-		public CryptoString Passphrase { get; set; }
-		public CryptoString Pin { get; set; }
-		public CryptoString PadlockCombination { get; set; }
-
-
-		public bool RequiresPassphrase { get; set; } = true;
-		public bool RequiresPadlockCombination { get; set; } = false;
-		public bool RequiresPin { get; set; } = false;
-
-		public CryptoString GenerateKey()
+		public CryptoCredentialsException(string message) : base(message)
 		{
-			PasswordHasher passHasher = new PasswordHasher(SHA512.Create());
-			Hasher hasher = new Hasher(SHA512.Create());
-
-			string passphraseHash = $"{hasher.Hash(CryptoString.SecureStringToString(Passphrase.GetSecureString()))}";
-			string combinationHash = $"{hasher.Hash(CryptoString.SecureStringToString(PadlockCombination.GetSecureString()))}";
-			string pinHash = $"{hasher.Hash(CryptoString.SecureStringToString(Pin.GetSecureString()))}";
-
-			string credentialsHash = hasher.Hash($"{passphraseHash}{pinHash}{combinationHash}");
-
-			CryptoString cryptoHash = new CryptoString(CryptoString.StringToSecureString(credentialsHash));
-
-			string key = passHasher.PasswordHash(cryptoHash);
 
 		}
+	}
+	public class CryptoCredentialsNullException : CryptoException
+	{
+		public CryptoCredentialsNullException(Type type, string message = null) : base($"CryptoCredentials have not been set for object of type {type.Name}. {message}")
+		{			
+		}
+	}
 
 
+	public class CryptoCredentials
+	{
+		// Ideas
+		// MultiPassphrases
+		// 
+
+		#region Private Fields
+		private int _pin;
+		private CryptoString _passphrase;
+		#endregion
+
+
+
+
+
+		public CryptoCredentials()
+		{
+		}
+
+		public bool UsePassphrase { get; set; } = false;
+		public bool UsePin { get; set; } = false;
+
+
+
+		#region Public Properties
+
+		/// <summary>
+		/// Passphrase (or password) that can contain words or a sentance that can be easily remembered by a user. This can also be a short password
+		/// and there is nothing to prevent you from creating even a single word. It is up to the application to enforce any rules on the password
+		/// length special characters etc. All Whitespace will be striped off the beginning and ending of the string, but may contain strings within
+		/// the passphrase.
+		/// </summary>
+		public CryptoString Passphrase
+		{
+			get
+			{
+				return _passphrase;
+			}
+			set
+			{			
+				_passphrase = value;
+				if (value == null)
+				{
+					UsePassphrase = false;
+				}
+				else
+				{
+					UsePassphrase = true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Pin can be used as an extra level of security. Pin must be and Int32 number and only in 4 digit format in the range 1000 - 9999.
+		/// This is an optional credential.
+		/// </summary>
+		public int Pin
+		{
+			get
+			{
+				return _pin;
+			}
+			set
+			{
+				if (!IsPinValid(value))
+				{
+					throw new CryptoCredentialsException("Invalid Pin. The Pin must be a number between 1000 - 9999 or 0 indicating no Pin");
+				}
+				_pin = value;
+
+				if (value == 0)
+				{
+					UsePassphrase = false;
+				}
+				else
+				{
+					UsePassphrase = true;
+				}
+			}		
+		}
+
+		/// <summary>
+		/// the Key is the Read-Only Hash of all the credentials. The Key is really to main component that will be used in the encryption apis.
+		/// </summary>
+		public string Key
+		{
+			get
+			{
+				// We can tweak the algorithms as require, but once stable it should NOT 
+				// change since it will break existing generated encryption
+				Hasher hasher = new Hasher();
+
+				// This routine arranges hashes in a specific order. If this changes it will 
+				//		break any existing encryption hashes.
+				string compoundString = "";
+				compoundString += UsePassphrase ? Passphrase.GetStringHash() : "";
+				compoundString += UsePin ? hasher.Hash(Pin) : "";
+
+				// Now Create the Final Key based on all the credentials
+				string key = hasher.Hash(compoundString);
+				return key;
+			}
+		}
+		#endregion
+
+		public bool IsPinValid(int pin)
+		{
+			if (pin == 0)
+				return true;
+			if (pin >= 1000 && pin <= 9999)
+				return true;
+
+			return false;
+		}		
 	}
 }
