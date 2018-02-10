@@ -59,6 +59,12 @@ namespace CryptoTools.CryptoFiles.DataFiles
 		/// If True the Entire File will be encrypted with a checksum of they bytes at the end of the file
 		/// </summary>
 		public bool EncryptFile { get; set; } = false;
+		
+		/// <summary>
+		/// If True the the Content (not the entire file) will be encrypted with a checksum of they bytes at the end of the content area
+		/// NOTE: THIS IS NOT IMPLEMENTED YET AND WILL BE ON DEMAD
+		/// </summary>
+		public bool EncryptContent { get; set; } = false;
 
 		/// <summary>
 		/// Returns the Credentials. This is only required if the EncryptFile property is set to true.

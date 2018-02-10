@@ -37,7 +37,8 @@ namespace CryptoTools.Cryptography.Symmetric
 
 		public SymmetricEncryptor(SymmetricAlgorithm algorithm = null, SymmetricEncryptorOptions options = null, HashAlgorithm hashAlgorithm = null)
 		{
-			_algorithm = algorithm != null ? algorithm : Aes.Create();
+			//_algorithm = algorithm != null ? algorithm : Aes.Create();
+			_algorithm = algorithm != null ? algorithm : DES.Create();
 			_hasher = hashAlgorithm != null ? new Hasher(hashAlgorithm) : new Hasher();
 			Options = SymmetricEncryptorOptions.CreateMergedInstance(options);
 		}
@@ -82,14 +83,15 @@ namespace CryptoTools.Cryptography.Symmetric
 				using (MemoryStream memoryStream = new MemoryStream())
 				{
 					ICryptoTransform transform = _algorithm.CreateEncryptor();
-					using (CryptoStream cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
-					{
-						if (!cryptoStream.CanWrite) Debug.Assert(false, "Stream is not writable");
+					bytesOut = transform.TransformFinalBlock(bytesIn, 0, bytesIn.Length);
+					//using (CryptoStream cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
+					//{
+					//	if (!cryptoStream.CanWrite) Debug.Assert(false, "Stream is not writable");
 
-						cryptoStream.Write(bytesIn, 0, bytesIn.Length);
+					//	cryptoStream.Write(bytesIn, 0, bytesIn.Length);
 
-					}
-					bytesOut = memoryStream.ToArray();
+					//}
+					//bytesOut = memoryStream.ToArray();
 				}
 
 			}
@@ -98,10 +100,7 @@ namespace CryptoTools.Cryptography.Symmetric
 				Log.ErrorException(exception, this);
 				throw;
 			}
-			finally
-			{
-				//Options.SymmetricAlgorithm.Clear();
-			}
+			
 			return bytesOut;
 
 		}

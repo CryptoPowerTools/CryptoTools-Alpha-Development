@@ -99,11 +99,11 @@ namespace CryptoTools.Cryptography.Utils
 
 				if (value == 0)
 				{
-					UsePassphrase = false;
+					UsePin = false;
 				}
 				else
 				{
-					UsePassphrase = true;
+					UsePin = true;
 				}
 			}		
 		}

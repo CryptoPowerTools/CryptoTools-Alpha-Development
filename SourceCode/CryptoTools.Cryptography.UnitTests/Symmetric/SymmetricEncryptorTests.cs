@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using CryptoTools.Cryptography.Utils;
 using System.Diagnostics;
 using CryptoTools.Cryptography.Exceptions;
+using CryptoTools.Cryptography.Hashing;
+using CryptoTools.Common.Utils;
 
 namespace CryptoTools.Cryptography.UnitTests.Symmetric
 {
@@ -68,6 +70,33 @@ namespace CryptoTools.Cryptography.UnitTests.Symmetric
 			Assert.IsTrue(buffer.SequenceEqual(decryptedBuffer));
 		}
 
+		/// <summary>
+		/// TEst to show that the Symmetric Algorithm produces different output with every encryption.
+		/// </summary>
+		[TestMethod]
+		public void SymmetricEncryptor_ComparingOutPredictability()
+		{
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			};
+
+			byte[] buffer = new byte[] { 0x1, 0x0 };
+
+			using (SymmetricEncryptor encryptor = new SymmetricEncryptor(credentials))
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					byte[] encrypted = encryptor.EncryptBytes(buffer);
+					byte[] decrypted = encryptor.DecryptBytes(encrypted);
+					Debug.WriteLine($"encrypted: {StringUtils.BytesToHexString(encrypted)} -> Decrypted: {StringUtils.BytesToHexString(decrypted)}");
+
+				}
+			} // IDispose - Closes and clears the keys in memory
+			
+		}
+
 		[TestMethod]
 		public void SymmetricEncryptor_HeavyUsage()
 		{
@@ -78,7 +107,7 @@ namespace CryptoTools.Cryptography.UnitTests.Symmetric
 				Pin = 2222
 			};
 			CryptoRandomizer random = new CryptoRandomizer();
-			const int Iterations = 100;
+			const int Iterations = 10;
 			const int MaxMemoryBlock = 100000;
 
 

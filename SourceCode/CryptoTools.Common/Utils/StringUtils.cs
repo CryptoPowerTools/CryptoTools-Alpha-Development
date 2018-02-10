@@ -21,6 +21,16 @@ namespace CryptoTools.Common.Utils
 
 		}
 
+		public static string BytesToHexString(byte[] bytes)
+		{
+			StringBuilder builder = new StringBuilder();
+			foreach (Byte b in bytes)
+			{
+				builder.Append(b.ToString("x2"));
+			}
+			return builder.ToString();
+		}
+
 		public static string StringArrayToString(string[] array, bool appendNewLine = false)
 		{
 			// Concatenate all the elements into a StringBuilder.

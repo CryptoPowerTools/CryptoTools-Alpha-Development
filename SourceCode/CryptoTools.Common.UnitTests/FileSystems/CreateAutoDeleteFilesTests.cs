@@ -55,7 +55,7 @@ namespace CryptoTools.Common.UnitTests.FileSystems
 			FileManager fileMan = new FileManager();
 			ByteGenerator byteGenerator = new ByteGenerator();
 			IList<FileInfo> files = new List<FileInfo>();
-			const int FileCount = 200;
+			const int FileCount = 20;
 			const string SubDirectory = "TestFile";
 
 			// Define a bunch of Files

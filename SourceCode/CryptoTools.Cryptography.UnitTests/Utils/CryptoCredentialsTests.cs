@@ -31,11 +31,9 @@ namespace CryptoTools.Cryptography.UnitTests.Utils
 		[TestMethod]
 		public void CryptoCredential_ConfirmPropertiesSet()
 		{
-			string passphraseString = "My Passphrase";
-			CryptoString passphrase = new CryptoString(CryptoString.StringToSecureString(passphraseString));
-			int pin = 1234;
-			
 			// Create Credentials
+			CryptoString passphrase = new CryptoString("My Passphrase");
+			int pin = 1234;
 			CryptoCredentials credentials = new CryptoCredentials();
 
 			// Assign Credentials and ensure the 'Use' properties get updated

@@ -10,9 +10,6 @@ namespace CryptoTools.Cryptography.UnitTests.Utils
 	[TestClass]
 	public class CryptoBlobTests
 	{
-
-		
-
 		[TestMethod]
 		public void CryptoBlob_BasicUsage()
 		{
@@ -51,12 +48,55 @@ namespace CryptoTools.Cryptography.UnitTests.Utils
 		}
 
 		[TestMethod]
+		public void CryptoBlob_AdvancedUsage()
+		{
+			try
+			{
+				//byte[] bytes = new ByteGenerator().GenerateBytes(10);
+				byte[] bytes = new byte[] { 0x00, 0x00 } ;
+
+				// Create Credentials
+				CryptoCredentials credentials = new CryptoCredentials
+				{
+					Passphrase = new CryptoString("My Passphrase"),
+					Pin = 2222
+				};
+
+				CryptoBlob blob = new CryptoBlob(credentials, bytes);
+				byte[] encryptedBytes = blob.GetEncryptedBytes();
+				blob.SetEncryptedBytes(encryptedBytes);
+				byte[] decryptedBytes = blob.Decrypt(true);
+
+
+				CryptoBlob blob2 = new CryptoBlob(credentials, decryptedBytes);
+				byte[] encryptedBytes2 = blob2.GetEncryptedBytes();
+				byte[] decryptedBytes2 = blob.Decrypt(true);
+
+				bool diff = encryptedBytes.SequenceEqual(encryptedBytes2);
+
+				
+				//byte[] decryptedBytes = blob.Decrypt();
+				//byte[] encryptedBytes = blob.GetEncryptedBytes();
+				//blob.SetEncryptedBytes(encryptedBytes);
+				
+				// Validates the Checksum of the blob and throws an exception if the Blob fails the integrity check
+				blob.ValidateChecksum();
+
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.Message);
+				throw;
+			}
+		}
+
+		[TestMethod]
 		public void CryptoBlob_StressTest()
 		{
 
 
-			int iterations = 20000;
-			int blocksize = 100000;
+			int iterations = 200;
+			int blocksize = 100;
 
 			byte[] bytes = new ByteGenerator().GenerateBytes(blocksize);
 
@@ -64,8 +104,7 @@ namespace CryptoTools.Cryptography.UnitTests.Utils
 			for (int i = 0; i < iterations; i++)
 			{
 				try
-				{
-				
+				{				
 					// Create Credentials
 					CryptoCredentials credentials = new CryptoCredentials
 					{

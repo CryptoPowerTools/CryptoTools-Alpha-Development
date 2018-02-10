@@ -149,7 +149,7 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 			///////////////////////////////////////////////////
 			// Tweak this to stress test  10-5- is reasonable
 			///////////////////////////////////////////////////
-			int iterationSeed = 50;
+			int iterationSeed = 5;
 
 			int iterations = random.Next(iterationSeed/2, iterationSeed*2);
 

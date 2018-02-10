@@ -31,6 +31,7 @@ namespace CryptoTools.Cryptography.Utils
 		public CryptoBlob(CryptoCredentials credentials, byte[] decryptedBytes = null)
 		{
 			Credentials = credentials;
+			_encryptor = new SymmetricEncryptor(Credentials);
 			if(decryptedBytes != null) Encrypt(decryptedBytes);
 			HashSize = Hasher.CalculateHashBytesLength(_hasher.GetAlgorithm());
 		}
