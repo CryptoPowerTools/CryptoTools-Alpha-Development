@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="DataFiles\CryptoDataFileTests.cs" />
     <Compile Include="DataFiles\SecureTextFiles\SecureTextFileTests.cs" />
-    <Compile Include="DataFiles\CryptoBlobFileTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

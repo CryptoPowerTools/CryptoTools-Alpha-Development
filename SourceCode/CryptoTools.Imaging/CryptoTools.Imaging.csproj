@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0EC3006-1813-42E9-8FE0-96040F1EBBA8}</ProjectGuid>
+    <ProjectGuid>{B0664B51-0361-4CEA-B81A-7B486A61CA06}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CryptoTools.CryptoFiles</RootNamespace>
-    <AssemblyName>CryptoTools.CryptoFiles</AssemblyName>
+    <RootNamespace>CryptoTools.Imaging</RootNamespace>
+    <AssemblyName>CryptoTools.Imaging</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,37 +30,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QRCoder, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.3.2\lib\net40\QRCoder.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.3.2\lib\net40\UnityEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataFiles\Archive\ArchiveFile.cs" />
-    <Compile Include="DataFiles\CryptoDataFile.cs" />
-    <Compile Include="DataFiles\CryptoDataFileOptions.cs" />
-    <Compile Include="DataFiles\CryptoDataFileFooter.cs" />
-    <Compile Include="DataFiles\CryptoDataFileHeader.cs" />
-    <Compile Include="DataFiles\SecureText\SecureTextFile.cs" />
-    <Compile Include="DataFiles\SecureText\SecureTextFileReader.cs" />
-    <Compile Include="DataFiles\SecureText\SecureTextFileWriter.cs" />
-    <Compile Include="Exceptions\CryptoFileException.cs" />
-    <Compile Include="GlobalCryptoFilesOptions.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ImageUtils.cs" />
+    <Compile Include="Utils\QrCodeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CryptoTools.Common\CryptoTools.Common.csproj">
-      <Project>{88bdb474-ebb6-48cf-863c-cc03c6f4bfec}</Project>
-      <Name>CryptoTools.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CryptoTools.Cryptography\CryptoTools.Cryptography.csproj">
-      <Project>{277a5c6b-684d-4160-8ced-4a69858941c5}</Project>
-      <Name>CryptoTools.Cryptography</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

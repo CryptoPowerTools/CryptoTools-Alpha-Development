@@ -28,7 +28,9 @@ namespace CryptoTools.CryptoFiles
 			CryptoDataFileOptions = new CryptoDataFileOptions()
 			{
 				FileFormat = new byte[] { 0xFF, 0xAA },
+				FileVersion = 1,
 				ContentFormat = new byte[] { 0xA, 0x0 },
+				ContentVersion = 1,
 				EndFileFormat = new byte[] { 0xAA, 0xFF }
 			};
 		}

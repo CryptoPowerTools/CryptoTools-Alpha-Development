@@ -15,7 +15,7 @@ namespace CryptoTools.CryptoArchivers.Archivers
 
 		private ZipFile _zipFile = new ZipFile();
 
-		private CryptoString _password;
+		private CryptoCredentials _credentials;
 
 
 		public string FullFileName
@@ -30,18 +30,19 @@ namespace CryptoTools.CryptoArchivers.Archivers
 			}
 		}
 
-		public CryptoString Passphrase
+		public CryptoCredentials Credentials
 		{
 			get
 			{
-				return _password;
+				return _credentials;
 			}
 			set
 			{
-				_password = value;
+				_credentials = value;
 			}
 		}
 
+		public bool RemoveFilesAfterSave { get; set; }
 
 		public void AddFile(string fileName, string directoryPathInArchive = "")
 		{
@@ -79,15 +80,14 @@ namespace CryptoTools.CryptoArchivers.Archivers
 			_zipFile.Strategy = Ionic.Zlib.CompressionStrategy.Default;
 
 			// Convert password to a string
-			SecureString secureString = Passphrase.GetSecureString();
-			_zipFile.Password = CryptoString.SecureStringToString(secureString);
+			_zipFile.Password = CryptoString.SecureStringToString(Credentials.Passphrase.GetSecureString());
 
 			_zipFile.Save(FullFileName);
 
 			// Fill with Random Text to obsfuscate in memory 
 			_zipFile.Password = CryptoString.GenerateRandomText(1000);
 
-			Debug.WriteLine(_zipFile.Info);
+			//Debug.WriteLine(_zipFile.Info);
 			
 		}
 	}

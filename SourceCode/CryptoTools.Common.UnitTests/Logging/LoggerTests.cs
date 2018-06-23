@@ -16,7 +16,7 @@ namespace CryptoTools.Common.UnitTests.Logging
 
 			// Create and instance of the logger. This could be done for each class as some logging frameworks, 
 			// such as Log4Net allow you to filter on types.
-			ILog Log = Logger.GetInstance(typeof(LoggerTests));
+			ILog Log = Logger.CreateInstance(typeof(LoggerTests));
 
 			// You can now use the logger in your code
 			Log.Debug("Debug Message");

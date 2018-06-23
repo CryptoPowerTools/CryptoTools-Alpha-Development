@@ -262,6 +262,69 @@ namespace CryptoTools.CryptoFiles.UnitTests.DataFiles
 				Assert.IsTrue(dataFile.Content.SequenceEqual(dataLoader.Content));
 			}
 		}
+
+		[TestMethod]
+		public void CryptoDataFile_VersionNumbersTest()
+		{
+			FileManager fileOps = new FileManager();
+			Hasher hasher = new Hasher();
+
+			// Create Credentials
+			CryptoCredentials credentials = new CryptoCredentials { Passphrase = new CryptoString("My Passphrase") };
+
+			CryptoDataFile file1 = null;
+			CryptoDataFile file2 = null;
+			string dataFileName1 = "VersionDataFileTest.dat";
+			byte[] testBytes = new byte[] { 0x11, 0x22 };
+			
+			fileOps.DeleteFile(dataFileName1);
+
+			using (AutoDeleteFiles deleteFiles = new AutoDeleteFiles(dataFileName1))
+			{
+				////////////////////////////////////////////////////////////
+				// Write
+				////////////////////////////////////////////////////////////
+				try
+				{
+					// Write Content to data file
+					file1 = new CryptoDataFile(dataFileName1);
+			
+					file1.EncryptFile = true; 
+					file1.Credentials = credentials;
+					file1.Content = testBytes;
+					file1.Save();
+
+				}
+				catch (Exception ex)
+				{
+					Assert.Fail(ex.Message);
+				}
+
+				////////////////////////////////////////////////////////////
+				// Read / Load
+				////////////////////////////////////////////////////////////
+				try
+				{
+					// Read & Load File
+					file2 = new CryptoDataFile(dataFileName1);
+					file2.Credentials = credentials;
+					file2.EncryptFile = true;
+					file2.Load();
+
+					// Compare the files they should be exactly the same
+					Assert.IsTrue(file1.Content.SequenceEqual(file2.Content));
+
+				}
+				catch (Exception ex)
+				{
+					// Delete Files
+					Assert.Fail(ex.Message);
+				}
+				finally
+				{
+				}				
+			}
+		}
 	}
 }
 

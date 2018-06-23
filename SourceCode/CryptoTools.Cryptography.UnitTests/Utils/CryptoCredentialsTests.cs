@@ -27,6 +27,29 @@ namespace CryptoTools.Cryptography.UnitTests.Utils
 
 		}
 
+		[TestMethod]
+		public void CryptoCredential_AdvancedUsage()
+		{
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			}.MakeReadOnly();
+
+
+			try { credentials.Passphrase = new CryptoString("test"); } catch (Exception e) { Assert.IsTrue(e is CryptoCredentialsException); }
+			try { credentials.Pin = 5555; } catch (Exception e) { Assert.IsTrue(e is CryptoCredentialsException); }
+
+
+			// Check what  credentials are used
+			bool passphraseUsed = credentials.UsePassphrase;
+			bool pinUsed = credentials.UsePin;
+
+			// Generate Key to be used for your encryption
+			string key = credentials.Key;
+
+		}
+
 
 		[TestMethod]
 		public void CryptoCredential_ConfirmPropertiesSet()

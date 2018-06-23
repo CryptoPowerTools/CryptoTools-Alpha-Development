@@ -17,9 +17,14 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 		public void FileArchiver_BasicUsage()
 		{
 			// Arrange
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			};
+
 			FileManager fileMan = new FileManager();
 			Hasher hasher = new Hasher();
-			CryptoString passPhrase = new CryptoString(CryptoString.StringToSecureString("My Pass Phrase"));
 			int fileSize = 2000;
 
 			// Define Some Directories & Files
@@ -69,7 +74,7 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 					// Create the Archiver, Add Directory and Save (Zip/Archive)
 					CryptoArchiver archiver = new CryptoArchiver();
 					archiver.FullFileName = "TestArchive.bin";
-					archiver.Passphrase = passPhrase;
+					archiver.Credentials = credentials;
 					archiver.AddDirectory(directoryName1, directoryName1);
 					archiver.Save();
 
@@ -91,7 +96,7 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 				{
 					// Create the Archiver, Add Directory and Save (Zip/Archive) from Bytes
 					CryptoArchiver archiver = new CryptoArchiver();
-					archiver.Passphrase = passPhrase;
+					archiver.Credentials = credentials;
 					archiver.AddDirectory(directoryName1, directoryName1);
 					byte[] bytes = archiver.SaveToBytes();
 
@@ -140,10 +145,15 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 		public void FileArchiver_StressTest()
 		{
 			// Arrange
+			CryptoCredentials credentials = new CryptoCredentials
+			{
+				Passphrase = new CryptoString("My Passphrase"),
+				Pin = 2222
+			};
+
 			CryptoRandomizer random = new CryptoRandomizer();
 			FileManager fileMan = new FileManager();
 			Hasher hasher = new Hasher();
-			CryptoString passPhrase = new CryptoString(CryptoString.StringToSecureString("Tests"));
 			string extractDirectory = "ExtractDirectory";
 
 			///////////////////////////////////////////////////
@@ -187,7 +197,7 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 							CryptoArchiver archiver = new CryptoArchiver();
 							string fileName = fileMan.GenerateTempFileName("archive", true);
 							archiver.FullFileName = fileName;
-							archiver.Passphrase = passPhrase;
+							archiver.Credentials = credentials;
 							foreach (var dirs in directories)
 							{
 								archiver.AddDirectory(dirs.Name, dirs.Name);
@@ -209,7 +219,7 @@ namespace CryptoTools.CryptoArchivers.UnitTests
 							// Save the Bytes and Verify
 							/////////////////////////////////////////////////////
 							CryptoArchiver archiver2 = new CryptoArchiver();
-							archiver2.Passphrase = passPhrase;
+							archiver2.Credentials = credentials;
 							foreach (var dirs in directories)
 							{
 								archiver2.AddDirectory(dirs.Name, dirs.Name);

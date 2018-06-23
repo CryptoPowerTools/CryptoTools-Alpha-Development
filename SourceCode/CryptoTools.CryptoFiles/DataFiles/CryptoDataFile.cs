@@ -82,9 +82,11 @@ namespace CryptoTools.CryptoFiles.DataFiles
 		private void BuildHeader()
 		{
 			Header.FileFormat = Options.FileFormat;
+			Header.FileVersion = Options.FileVersion.Value;
 			Header.ContentFormat = Options.ContentFormat;
-			Header.ContentHash = _hasher.HashToBytes(Content);
+			Header.ContentVersion = Options.ContentVersion.Value;
 			Header.ContentSize = Content.Length;
+			Header.ContentHash = _hasher.HashToBytes(Content);
 		}
 
 		private void BuildFooter()
@@ -98,7 +100,9 @@ namespace CryptoTools.CryptoFiles.DataFiles
 		{
 			// This needs to be updated if the file format changes
 			byte[] fileContents = Header.FileFormat.
+								Concat(BitConverter.GetBytes(Header.FileVersion)).
 								Concat(Header.ContentFormat).
+								Concat(BitConverter.GetBytes(Header.ContentVersion)).
 								Concat(BitConverter.GetBytes(Header.ContentSize)).
 								Concat(Header.ContentHash).
 								Concat(Header.ReservedArea).
@@ -150,10 +154,22 @@ namespace CryptoTools.CryptoFiles.DataFiles
 					{
 						return false;
 					}
+					// Check File Version
+					int fileVersion = reader.ReadInt32();
+					if (Header.FileVersion != fileVersion)
+					{
+						return false;
+					}
 
 					// Check Content format
 					byte[] contentFormat = reader.ReadBytes(Header.ContentFormatSize);
 					if (!Header.ContentFormat.SequenceEqual(contentFormat))
+					{
+						return false;
+					}
+					// Check File Version
+					int contentVersion = reader.ReadInt32();
+					if (Header.ContentVersion != contentVersion)
 					{
 						return false;
 					}
@@ -187,10 +203,19 @@ namespace CryptoTools.CryptoFiles.DataFiles
 			{
 				throw new CryptoFileInvalidFormatException(FullFileName, $"FileFormat failed verification. Expected:{Options.FileFormat} Actual:{Header.FileFormat}");
 			}
+			if (Header.FileVersion != Options.FileVersion)
+			{
+				throw new CryptoFileInvalidFormatException(FullFileName, $"FileVersion failed verification. Expected:{Options.FileVersion} Actual:{Header.FileVersion}");
+			}
 			if (!Header.ContentFormat.SequenceEqual(Options.ContentFormat))
 			{
 				throw new CryptoFileInvalidFormatException(FullFileName, $"ContentFormat failed verification. Expected:{Options.ContentFormat} Actual:{Header.ContentFormat}");
 			}
+			if (Header.ContentVersion != Options.ContentVersion)
+			{
+				throw new CryptoFileInvalidFormatException(FullFileName, $"FileVersion failed verification. Expected:{Options.ContentVersion} Actual:{Header.ContentVersion}");
+			}
+
 			if (!Footer.EndFileFormat.SequenceEqual(Options.EndFileFormat))
 			{
 				throw new CryptoFileInvalidFormatException(FullFileName, $"EndFileFormat failed verification. Expected:{Options.EndFileFormat} Actual:{Footer.EndFileFormat}");
@@ -230,7 +255,9 @@ namespace CryptoTools.CryptoFiles.DataFiles
 				{
 					/////  Header  /////////////////////////////////////////////////
 					Header.FileFormat = reader.ReadBytes(Header.FileFormatSize);
+					Header.FileVersion = reader.ReadInt32();
 					Header.ContentFormat = reader.ReadBytes(Header.ContentFormatSize);
+					Header.ContentVersion = reader.ReadInt32();
 					Header.ContentSize = reader.ReadInt32();
 					Header.ContentHash = reader.ReadBytes(Header.ContentHashSize);
 					Header.ReservedArea = reader.ReadBytes(Header.ReservedAreaSize);
@@ -295,7 +322,9 @@ namespace CryptoTools.CryptoFiles.DataFiles
 				{
 					/////  Header  /////////////////////////////////////////////////
 					writer.Write(Header.FileFormat);
+					writer.Write(Header.FileVersion);
 					writer.Write(Header.ContentFormat);
+					writer.Write(Header.ContentVersion);
 					writer.Write(Header.ContentSize);
 					writer.Write(Header.ContentHash);
 					writer.Write(Header.ReservedArea);

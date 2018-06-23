@@ -72,7 +72,7 @@ namespace CryptoTools.Common.Logging
 		/// </example>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		public static ILog GetInstance(Type type)
+		public static ILog CreateInstance(Type type)
 		{
 			if(_logger == null)
 			{

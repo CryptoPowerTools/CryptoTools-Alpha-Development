@@ -278,7 +278,7 @@ namespace CryptoTools.Cryptography.Hashing
 					string tempHashSignature = HashFile(file);
 					// Calculate a new Hash Signature based on the previous Hash
 					hash = Hash(tempHashSignature + hash);
-					Debug.WriteLine($"{hash} - {file}");
+					//Debug.WriteLine($"{hash} - {file}");
 				}
 
 				directories = Directory.GetDirectories(dir);

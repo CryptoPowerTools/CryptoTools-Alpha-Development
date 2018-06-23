@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Asymmetric\AsymmetricEncryptorTests.cs" />
+    <Compile Include="Guids\GuidTests.cs" />
     <Compile Include="Hashing\HasherTests.cs" />
     <Compile Include="Hashing\PasswordHasherTests.cs" />
     <Compile Include="Symmetric\SymmetricEncryptorTests.cs" />

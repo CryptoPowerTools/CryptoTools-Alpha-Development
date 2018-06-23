@@ -26,18 +26,23 @@ namespace CryptoTools.CryptoArchivers
 				_archiver.FullFileName = value;
 			}
 		}
-		public CryptoString Passphrase
+		public CryptoCredentials Credentials
 		{
 			get
 			{
-				return _archiver.Passphrase;
+				if (_archiver.Credentials == null)
+					throw new CryptoCredentialsNullException(typeof(CryptoArchiver));
+
+				return _archiver.Credentials;
 			}
 			set
 			{
-				_archiver.Passphrase = value;
+				_archiver.Credentials = value;
 			}
 		}
-				
+
+		public bool RemoveFilesAfterSave { get; set; }
+
 		private IFileArchiver _archiver;
 
 
@@ -45,8 +50,9 @@ namespace CryptoTools.CryptoArchivers
 		{
 			if(archiver==null)
 			{
-				_archiver = new DotNetZipArchiver();
+				archiver = new DotNetZipArchiver();
 			}
+			_archiver = archiver;
 		}		
 	
 		public void AddDirectory(string directoryName, string directoryNameInArchive = "")
@@ -72,29 +78,34 @@ namespace CryptoTools.CryptoArchivers
 		public byte[] SaveToBytes()
 		{
 			FileManager fileMan = new FileManager();
+			byte[] bytes;
 			string tempFileName = fileMan.GenerateTempFileName("SaveToBytes");
-			_archiver.FullFileName = tempFileName;
-			_archiver.Save();
-			_archiver.FullFileName = ""; // For safety reset the filename
-			
-			// Read Bytes and delete file
-			byte[] bytes = File.ReadAllBytes(tempFileName);
-			fileMan.DeleteFile(tempFileName);
 
+			using (AutoDeleteFiles autoDelete = new AutoDeleteFiles(tempFileName))
+			{
+				_archiver.FullFileName = tempFileName;
+				_archiver.Save();
+				_archiver.FullFileName = ""; // For safety reset the filename
+
+				// Read Bytes and delete file
+				bytes = File.ReadAllBytes(tempFileName);
+			}
 			return bytes;
 		}
 
 		public void ExtractAllFromBytes(string directoryName, byte[] bytes)
 		{
 			FileManager fileMan = new FileManager();
-			string tempFileName = fileMan.GenerateTempFileName();
+			string tempFileName = fileMan.GenerateTempFileName("ExtractAllFromBytes");
 
-			
-			// Create/Write the bytes to a file
-			fileMan.CreateWriteBytes(tempFileName, bytes);
-			_archiver.FullFileName = tempFileName;
-			_archiver.ExtractAll(directoryName);
-			_archiver.FullFileName = "";
+			using (AutoDeleteFiles autoDelete = new AutoDeleteFiles(tempFileName))
+			{
+				// Create/Write the bytes to a file
+				fileMan.CreateWriteBytes(tempFileName, bytes);
+				_archiver.FullFileName = tempFileName;
+				_archiver.ExtractAll(directoryName);
+				_archiver.FullFileName = "";
+			}
 		}
 
 	}

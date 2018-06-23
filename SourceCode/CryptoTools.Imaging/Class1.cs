@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoTools.CryptoFiles
+namespace CryptoTools.Imaging
 {
     public class Class1
     {

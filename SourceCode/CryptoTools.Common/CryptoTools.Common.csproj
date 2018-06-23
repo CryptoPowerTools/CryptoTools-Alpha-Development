@@ -30,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\IceWallet\Source\IceWalletSolution\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\CommonEvents.cs" />
+    <Compile Include="Events\LogEventArgs.cs" />
     <Compile Include="FileSystems\AutoDeleteFiles.cs" />
     <Compile Include="FileSystems\ByteGenerator.cs" />
     <Compile Include="FileSystems\CreateAutoDeleteDirectory.cs" />
@@ -52,14 +59,22 @@
     <Compile Include="Logging\LoggingExceptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\DefaultOptionsBuilder.cs" />
+    <Compile Include="Serialization\JsonCompare.cs" />
+    <Compile Include="Serialization\JsonSerializer.cs" />
+    <Compile Include="Utils\DateTimeUtils.cs" />
+    <Compile Include="Utils\EnvironmentUtils.cs" />
+    <Compile Include="Utils\ExceptionUtils.cs" />
     <Compile Include="Utils\GuidUtils.cs" />
+    <Compile Include="Utils\ImageUtils.cs" />
     <Compile Include="Utils\ObjectUtils.cs" />
     <Compile Include="Utils\Randomizer.cs" />
     <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\ValidateUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Serialization\" />
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -43,6 +43,11 @@
   <ItemGroup>
     <Compile Include="Asymmetric\AsymmetricEncryptor.cs" />
     <Compile Include="Exceptions\CryptoException.cs" />
+    <Compile Include="Guids\CryptoGuid.cs" />
+    <Compile Include="Guids\DotNetGuidAlgorithm.cs" />
+    <Compile Include="Guids\IGuidAlgorithm.cs" />
+    <Compile Include="Guids\Md5GuidAlgorithm.cs" />
+    <Compile Include="Guids\Sha256GuidAlgorithm.cs" />
     <Compile Include="Utils\CryptoBlob.cs" />
     <Compile Include="Utils\CryptoCredentials.cs" />
     <Compile Include="Utils\CryptoRandomizer.cs" />

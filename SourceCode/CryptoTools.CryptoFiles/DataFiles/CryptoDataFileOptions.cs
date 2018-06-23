@@ -14,9 +14,11 @@ namespace CryptoTools.CryptoFiles.DataFiles
 	public class CryptoDataFileOptions
 	{
 		public byte[] FileFormat { get; set; }
+		public int? FileVersion { get; set; }
 		public byte[] ContentFormat { get; set; }
+		public int? ContentVersion { get; set; }
 		public byte[] EndFileFormat { get; set; }
-
+		
 		public CryptoDataFileOptions()
 		{
 		}

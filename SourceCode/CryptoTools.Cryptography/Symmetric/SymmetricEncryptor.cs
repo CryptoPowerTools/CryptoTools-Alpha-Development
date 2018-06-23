@@ -16,7 +16,7 @@ namespace CryptoTools.Cryptography.Symmetric
 	public class SymmetricEncryptor : IDisposable	
 	{
 		#region Private Fields
-		private ILog Log = Logger.GetInstance(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private ILog Log = Logger.CreateInstance(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private SymmetricAlgorithm _algorithm;
 		private Hasher _hasher;
 		#endregion

@@ -16,7 +16,6 @@ namespace CryptoTools.Cryptography.Utils
 	{
 		public CryptoCredentialsException(string message) : base(message)
 		{
-
 		}
 	}
 	public class CryptoCredentialsNullException : CryptoException
@@ -25,10 +24,15 @@ namespace CryptoTools.Cryptography.Utils
 		{			
 		}
 	}
+	
 
 
 	public class CryptoCredentials
 	{
+
+		const string ReadOnlyExceptionMessage = "{0} cannot be set.Credentials have been set to ReadOnly.Once ReadOnly is set you CANNOT unset it for security.You must recreate the CryptoCredentials object.";
+
+
 		// Ideas
 		// MultiPassphrases
 		// 
@@ -36,6 +40,7 @@ namespace CryptoTools.Cryptography.Utils
 		#region Private Fields
 		private int _pin;
 		private CryptoString _passphrase;
+		private bool _readOnly = false;
 		#endregion
 
 
@@ -44,6 +49,12 @@ namespace CryptoTools.Cryptography.Utils
 
 		public CryptoCredentials()
 		{
+		}
+
+		public CryptoCredentials MakeReadOnly()
+		{
+			_readOnly = true;
+			return this;
 		}
 
 		public bool UsePassphrase { get; set; } = false;
@@ -66,7 +77,9 @@ namespace CryptoTools.Cryptography.Utils
 				return _passphrase;
 			}
 			set
-			{			
+			{
+				if (_readOnly) throw new CryptoCredentialsException(string.Format(ReadOnlyExceptionMessage, nameof(Passphrase)));
+				
 				_passphrase = value;
 				if (value == null)
 				{
@@ -91,6 +104,7 @@ namespace CryptoTools.Cryptography.Utils
 			}
 			set
 			{
+				if (_readOnly) throw new CryptoCredentialsException(string.Format(ReadOnlyExceptionMessage, nameof(Pin)));
 				if (!IsPinValid(value))
 				{
 					throw new CryptoCredentialsException("Invalid Pin. The Pin must be a number between 1000 - 9999 or 0 indicating no Pin");
